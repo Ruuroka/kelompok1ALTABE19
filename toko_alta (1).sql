@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 26, 2023 at 04:01 PM
+-- Generation Time: Oct 26, 2023 at 04:22 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -34,7 +34,9 @@ CREATE TABLE `barangs` (
   `deleted_at` datetime(3) DEFAULT NULL,
   `nama_barang` longtext DEFAULT NULL,
   `desc_barang` longtext DEFAULT NULL,
-  `user_id` bigint(20) UNSIGNED DEFAULT NULL
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `harga_barang` longtext DEFAULT NULL,
+  `stock` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -49,7 +51,8 @@ CREATE TABLE `users` (
   `updated_at` datetime(3) DEFAULT NULL,
   `deleted_at` datetime(3) DEFAULT NULL,
   `nama` longtext DEFAULT NULL,
-  `password` longtext DEFAULT NULL
+  `password` longtext DEFAULT NULL,
+  `status_users` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -61,7 +64,8 @@ CREATE TABLE `users` (
 --
 ALTER TABLE `barangs`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `idx_barangs_deleted_at` (`deleted_at`);
+  ADD KEY `idx_barangs_deleted_at` (`deleted_at`),
+  ADD KEY `fk_users_barangs` (`user_id`);
 
 --
 -- Indexes for table `users`
@@ -85,6 +89,16 @@ ALTER TABLE `barangs`
 --
 ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `barangs`
+--
+ALTER TABLE `barangs`
+  ADD CONSTRAINT `fk_users_barangs` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
