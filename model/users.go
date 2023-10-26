@@ -6,6 +6,6 @@ type User struct {
 	gorm.Model
 	Nama         string
 	Password     string
-	status_users string
-	barangs      []Barang
+	Status_users string
+	Barangs      []Barang `gorm:"foreignKey:UserID"`
 }
