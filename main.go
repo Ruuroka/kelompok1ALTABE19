@@ -15,4 +15,6 @@ func main() {
 
 	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.Barang{})
+	db.AutoMigrate(&model.Customer{})
+	db.AutoMigrate(&model.Transaksi{})
 }

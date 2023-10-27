@@ -7,5 +7,6 @@ type User struct {
 	Nama         string
 	Password     string
 	Status_users string
-	Barangs      []Barang `gorm:"foreignKey:UserID"`
+	Barangs      []Barang    `gorm:"foreignKey:UserID"`
+	Transaksis   []Transaksi `gorm:"foreignKey:UserID"`
 }
