@@ -7,4 +7,5 @@ type Transaksi struct {
 	Tanggal_transaksi time.Time
 	UserID            uint
 	No_hp             uint
+	Id_metode         uint
 }

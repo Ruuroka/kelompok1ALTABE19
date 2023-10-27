@@ -1,6 +1,11 @@
 package model
 
-type metodePembayaran struct {
-	payment_method_id uint `gorm:"primaryKey"`
-	method_name       string
+import (
+	"gorm.io/gorm"
+)
+
+type Metode_Pembayaran struct {
+	gorm.Model
+	Method_name string
+	Transaksis  []Transaksi `gorm:"foreignKey:Id_metode"`
 }
