@@ -1,8 +1,7 @@
-package main
+package controller
 
 import (
 	"fmt"
-	"kelompok1ALTABE19/config"
 	"kelompok1ALTABE19/model"
 	"strconv"
 	"strings"
@@ -10,59 +9,30 @@ import (
 	"gorm.io/gorm"
 )
 
-func hei() {
-	db, err := config.InitDB()
-	if err != nil {
-		fmt.Println("Terjadi kesalahan:", err.Error())
-		return
-	}
-
-	for {
-		fmt.Println("Pilih operasi yang ingin Anda lakukan:")
-		fmt.Println("1. Tambah Barang")
-		fmt.Println("2. Tampilkan Barang")
-		fmt.Println("3. Update Barang")
-		fmt.Println("4. Hapus Barang")
-		fmt.Println("5. Keluar")
-		fmt.Print("Pilihan: ")
-
-		var choice int
-		fmt.Scanln(&choice)
-
-		switch choice {
-		case 1:
-			addBarang(db)
-		case 2:
-			showBarang(db)
-		case 3:
-			updateBarang(db)
-		case 4:
-			deleteBarang(db)
-		case 5:
-			fmt.Println("Terima kasih! Keluar dari program.")
-			return
-		default:
-			fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
-		}
-	}
+type BarangSystem struct {
+	DB *gorm.DB
 }
 
-func addBarang(db *gorm.DB) {
-	var barang model.Barang
+func (ts *BarangSystem) addBarang(db *gorm.DB) (model.Barang, bool) {
+	var newBarang = new(model.Barang)
 
 	fmt.Print("Nama Barang: ")
-	fmt.Scanln(&barang.Nama_barang)
+	fmt.Scanln(&newBarang.Nama_barang)
 	fmt.Print("Deskripsi Barang: ")
-	fmt.Scanln(&barang.Desc_barang)
+	fmt.Scanln(&newBarang.Desc_barang)
 	fmt.Print("Harga Barang: ")
-	fmt.Scanln(&barang.Harga_barang)
+	fmt.Scanln(&newBarang.Harga_barang)
 	fmt.Print("Stok Barang: ")
-	fmt.Scanln(&barang.Stock)
+	fmt.Scanln(&newBarang.Stock)
 
 	// Tambahkan barang ke database
-	db.Create(&barang)
+	err := ts.DB.Create(newBarang).Error
+	if err != nil {
+		fmt.Println("input error:", err.Error())
+		return model.Barang{}, false
+	}
 
-	fmt.Println("Barang telah ditambahkan.")
+	return *newBarang, true
 }
 
 func showBarang(db *gorm.DB) {
