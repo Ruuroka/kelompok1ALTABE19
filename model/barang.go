@@ -9,5 +9,6 @@ type Barang struct {
 	Harga_barang     string
 	Stock            int
 	UserID           uint
+	User             User
 	TransaksiDetails []TransaksiDetail `gorm:"foreignKey:Id_barang"`
 }

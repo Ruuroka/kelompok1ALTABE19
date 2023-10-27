@@ -1,9 +1,10 @@
 package controller
 
 import (
+	"bufio"
 	"fmt"
 	"kelompok1ALTABE19/model"
-	"strconv"
+	"os"
 	"strings"
 
 	"gorm.io/gorm"
@@ -13,17 +14,19 @@ type BarangSystem struct {
 	DB *gorm.DB
 }
 
-func (ts *BarangSystem) addBarang(db *gorm.DB) (model.Barang, bool) {
+func (ts *BarangSystem) AddBarang(userID uint) (model.Barang, bool) {
 	var newBarang = new(model.Barang)
-
+	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Nama Barang: ")
 	fmt.Scanln(&newBarang.Nama_barang)
 	fmt.Print("Deskripsi Barang: ")
-	fmt.Scanln(&newBarang.Desc_barang)
+	newBarang.Desc_barang, _ = reader.ReadString('\n')
+	newBarang.Desc_barang = strings.TrimSpace(newBarang.Desc_barang)
 	fmt.Print("Harga Barang: ")
 	fmt.Scanln(&newBarang.Harga_barang)
 	fmt.Print("Stok Barang: ")
 	fmt.Scanln(&newBarang.Stock)
+	newBarang.UserID = userID
 
 	// Tambahkan barang ke database
 	err := ts.DB.Create(newBarang).Error
@@ -31,97 +34,59 @@ func (ts *BarangSystem) addBarang(db *gorm.DB) (model.Barang, bool) {
 		fmt.Println("input error:", err.Error())
 		return model.Barang{}, false
 	}
-
 	return *newBarang, true
 }
 
-func showBarang(db *gorm.DB) {
+func (ts *BarangSystem) ShowBarang(userID uint) ([]model.Barang, bool) {
 	var barang []model.Barang
-	db.Find(&barang)
+	// ts.DB.InnerJoins("INNER JOIN users ON barangs.user_id = users.id").Find(&barang)
+	ts.DB.Find(&barang)
 
-	fmt.Println("Daftar Barang:")
-	for _, b := range barang {
-		fmt.Printf("ID: %d, Nama: %s, Harga: %s, Stok: %d\n", b.ID, b.Nama_barang, b.Harga_barang, b.Stock)
+	if len(barang) == 0 {
+		fmt.Println("Daftar barang kosong.")
+		return nil, false
 	}
+	return barang, true
 }
 
-func updateBarang(db *gorm.DB) {
-	var barang model.Barang
-
-	fmt.Print("Masukkan ID Barang yang ingin diupdate: ")
-	var idInput string
-	fmt.Scanln(&idInput)
-
-	id, err := strconv.ParseUint(idInput, 10, 64)
+func (ts *BarangSystem) UpdateBarang(userID uint, barangID uint) (model.Barang, bool) {
+	existingBarang := model.Barang{}
+	err := ts.DB.First(&existingBarang, barangID).Error
 	if err != nil {
-		fmt.Println("ID Barang tidak valid.")
-		return
+		return model.Barang{}, false
 	}
+	reader := bufio.NewReader(os.Stdin)
 
-	err = db.First(&barang, id).Error
+	fmt.Print("Nama Barang: ")
+	fmt.Scanln(&existingBarang.Nama_barang)
+	fmt.Print("Deskripsi Barang: ")
+	existingBarang.Desc_barang, _ = reader.ReadString('\n')
+	existingBarang.Desc_barang = strings.TrimSpace(existingBarang.Desc_barang)
+	fmt.Print("Harga Barang: ")
+	fmt.Scanln(&existingBarang.Harga_barang)
+	fmt.Print("Stok Barang: ")
+	fmt.Scanln(&existingBarang.Stock)
+	existingBarang.UserID = userID
+
+	err = ts.DB.Save(&existingBarang).Error
 	if err != nil {
-		fmt.Println("Barang tidak ditemukan.")
-		return
+		return model.Barang{}, false
 	}
 
-	fmt.Print("Nama Barang (Enter untuk tidak mengubah): ")
-	var namaInput string
-	fmt.Scanln(&namaInput)
-	if strings.TrimSpace(namaInput) != "" {
-		barang.Nama_barang = namaInput
-	}
-
-	fmt.Print("Deskripsi Barang (Enter untuk tidak mengubah): ")
-	var descInput string
-	fmt.Scanln(&descInput)
-	if strings.TrimSpace(descInput) != "" {
-		barang.Desc_barang = descInput
-	}
-
-	fmt.Print("Harga Barang (Enter untuk tidak mengubah): ")
-	var hargaInput string
-	fmt.Scanln(&hargaInput)
-	if strings.TrimSpace(hargaInput) != "" {
-		barang.Harga_barang = hargaInput
-	}
-
-	fmt.Print("Stok Barang (Enter untuk tidak mengubah): ")
-	var stokInput string
-	fmt.Scanln(&stokInput)
-	if strings.TrimSpace(stokInput) != "" {
-		stok, err := strconv.Atoi(stokInput)
-		if err == nil {
-			barang.Stock = stok
-		}
-	}
-
-	// Update barang di database
-	db.Save(&barang)
-
-	fmt.Println("Barang telah diupdate.")
+	return existingBarang, true
 }
 
-func deleteBarang(db *gorm.DB) {
-	var barang model.Barang
-
-	fmt.Print("Masukkan ID Barang yang ingin dihapus: ")
-	var idInput string
-	fmt.Scanln(&idInput)
-
-	id, err := strconv.ParseUint(idInput, 10, 64)
+func (ts *BarangSystem) DeleteBarang(userID uint, barangID uint) bool {
+	existingBarang := model.Barang{}
+	err := ts.DB.Where("id = ? AND user_id = ?", barangID, userID).First(&existingBarang).Error
 	if err != nil {
-		fmt.Println("ID Barang tidak valid.")
-		return
+		return false
 	}
 
-	err = db.First(&barang, id).Error
+	err = ts.DB.Delete(&existingBarang).Error
 	if err != nil {
-		fmt.Println("Barang tidak ditemukan.")
-		return
+		return false
 	}
 
-	// Hapus barang dari database
-	db.Delete(&barang)
-
-	fmt.Println("Barang telah dihapus.")
+	return true
 }
