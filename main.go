@@ -76,9 +76,9 @@ func main() {
 									case 2:
 										result, permit := barang.ShowBarang(result.ID)
 										if permit {
-											fmt.Println("===Daftar Barang===")
 											for _, b := range result {
-												fmt.Printf("ID: %d, Nama: %s, Harga: %s, Stok: %d, Nama Editor: %d\n", b.ID, b.Nama_barang, b.Harga_barang, b.Stock, b.UserID)
+												fmt.Println("===Daftar Barang===")
+												fmt.Printf("ID: %d\nNama: %s\nHarga: %s\nStok: %d\nNama Editor: %d \n", b.ID, b.Nama_barang, b.Harga_barang, b.Stock, b.UserID)
 											}
 										}
 									case 3:
@@ -151,7 +151,8 @@ func main() {
 										result, permit := barang.ShowBarang(result.ID)
 										if permit {
 											for _, b := range result {
-												fmt.Printf("ID: %d, Nama: %s, Harga: %s, Stok: %d, Nama Editor:%s", b.ID, b.Nama_barang, b.Harga_barang, b.Stock, b.User.Nama)
+												fmt.Println("===Daftar Barang===")
+												fmt.Printf("ID: %d\nNama: %s\nHarga: %s\nStok: %d\nNama Editor: %d \n", b.ID, b.Nama_barang, b.Harga_barang, b.Stock, b.UserID)
 											}
 										}
 									case 3:
