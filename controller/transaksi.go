@@ -13,11 +13,11 @@ type TransaksiSystem struct {
 	DB *gorm.DB
 }
 
-func (ts *TransaksiSystem) AddTransaksi(userID uint, customerID uint, metodePembayaranID uint) (model.Transaksi, bool) {
+func (ts *TransaksiSystem) AddTransaksi(userID uint, no_Hp uint, metodeID uint) (model.Transaksi, bool) {
 	var newTransaksi = model.Transaksi{
-		UserID:             userID,
-		CustomerID:         customerID,
-		MetodePembayaranID: metodePembayaranID,
+		UserID:    userID,
+		No_hp:     no_Hp,
+		Id_metode: metodeID,
 	}
 
 	err := ts.DB.Create(&newTransaksi).Error
@@ -40,15 +40,15 @@ func (ts *TransaksiSystem) ShowTransaksi(userID uint) ([]model.Transaksi, bool) 
 	return transaksi, true
 }
 
-func (ts *TransaksiSystem) UpdateTransaksi(userID uint, transaksiID uint, customerID uint, metodePembayaranID uint) (model.Transaksi, bool) {
+func (ts *TransaksiSystem) UpdateTransaksi(userID uint, no_Nota uint, no_Hp uint, metodeID uint) (model.Transaksi, bool) {
 	existingTransaksi := model.Transaksi{}
-	err := ts.DB.Where("user_id = ? AND id = ?", userID, transaksiID).First(&existingTransaksi).Error
+	err := ts.DB.Where("user_id = ? AND no_nota = ?", userID, no_Nota).First(&existingTransaksi).Error
 	if err != nil {
 		return model.Transaksi{}, false
 	}
 
-	existingTransaksi.CustomerID = customerID
-	existingTransaksi.MetodePembayaranID = metodePembayaranID
+	existingTransaksi.No_hp = no_Hp
+	existingTransaksi.Id_metode = metodeID
 
 	err = ts.DB.Save(&existingTransaksi).Error
 	if err != nil {
