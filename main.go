@@ -24,6 +24,7 @@ func main() {
 	var auth = auth.AuthSystem{DB: db}
 	var barang = controller.BarangSystem{DB: db}
 	var metode = controller.MetodeSystem{DB: db}
+	var customer = controller.CustomerSystem{DB: db}
 
 	for {
 		fmt.Println("1. Login")
@@ -43,7 +44,7 @@ func main() {
 							fmt.Println("1. Tambahkann akun Pegawai")
 							fmt.Println("2. Menu Barang")
 							fmt.Println("3. Menu Metode Transaksi")
-							fmt.Println("4. Delete todo")
+							fmt.Println("4. Menu Customer")
 							fmt.Println("0. Logout")
 							fmt.Println("99. Exit")
 							fmt.Print("Masukkan pilihan:")
@@ -122,7 +123,7 @@ func main() {
 									case 1:
 										result, permit := metode.AddMetode()
 										if permit {
-											fmt.Println("Barang berhasil ditambahkan dengan detail berikut:")
+											fmt.Println("Metode Pembayaran berhasil ditambahkan dengan detail berikut:")
 											fmt.Printf("Nama Metode: %s\n", result.Method_name)
 										}
 
@@ -140,7 +141,7 @@ func main() {
 										fmt.Scanln(&metodeID)
 										result, permit := metode.UpdateMetode(metodeID)
 										if permit {
-											fmt.Println("Barang berhasil diperbarui dengan detail berikut:")
+											fmt.Println("Metode Pembayaran berhasil diperbarui dengan detail berikut:")
 											fmt.Printf("ID: %d\nNama Metode: %s\n", result.ID, result.Method_name)
 										}
 									case 4:
@@ -150,7 +151,7 @@ func main() {
 
 										permit := metode.DeleteMetode(metodeID)
 										if permit {
-											fmt.Println("Tugas berhasil dihapus")
+											fmt.Println("Metode Pembayaran berhasil dihapus")
 										}
 									case 5:
 										return
@@ -159,6 +160,57 @@ func main() {
 									}
 								}
 							case 4:
+								for permit {
+									fmt.Println("======Menu Customer========")
+									fmt.Println("1. Tambah Data Customer")
+									fmt.Println("2. Tampilkan Daftar Customer")
+									fmt.Println("3. Update Data Customer")
+									fmt.Println("4. Hapus Data Customer")
+									fmt.Println("5. Keluar")
+									fmt.Print("Pilihan: ")
+									var choice int
+									fmt.Scanln(&choice)
+
+									switch choice {
+									case 1:
+										result, permit := customer.AddCustomer()
+										if permit {
+											fmt.Println("Data Customer berhasil ditambahkan dengan detail berikut:")
+											fmt.Printf("Nama Customer: %s\n", result.Nama)
+										}
+
+									case 2:
+										result, permit := customer.ShowCustomer()
+										if permit {
+											for _, m := range result {
+												fmt.Println("===Daftar Customer===")
+												fmt.Printf("No HP: %d\nNama : %s\nAlamat: %s\nEmail: %s\n", m.No_hp, m.Nama, m.Alamat, m.Email)
+											}
+										}
+									case 3:
+										var no_Hp uint
+										fmt.Print("Masukkan No Hp Customer yang akan diperbarui: ")
+										fmt.Scanln(&no_Hp)
+										result, permit := customer.UpdateCustomer(no_Hp)
+										if permit {
+											fmt.Println("Data Customer berhasil diperbarui dengan detail berikut:")
+											fmt.Printf("No HP: %d\nNama : %s\nAlamat: %s\nEmail: %s\n", result.No_hp, result.Nama, result.Alamat, result.Email)
+										}
+									case 4:
+										var no_Hp uint
+										fmt.Print("Masukkan No Hp Customer yang akan dihapus: ")
+										fmt.Scanln(&no_Hp)
+
+										permit := customer.DeleteCustomer(no_Hp)
+										if permit {
+											fmt.Println("Data Customer berhasil dihapus")
+										}
+									case 5:
+										return
+									default:
+										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
+									}
+								}
 							case 5:
 							case 0:
 								permit = false
@@ -172,9 +224,9 @@ func main() {
 					for permit {
 						fmt.Println("======Tampilan Pegawai========")
 						for permit {
-							fmt.Println("1. Menu barang")
+							fmt.Println("1. Menu Barang")
 							fmt.Println("2. Menu Metode Transaksi")
-							fmt.Println("4. Delete todo")
+							fmt.Println("3. Menu Customer")
 							fmt.Println("0. Logout")
 							fmt.Println("99. Exit")
 							fmt.Print("Masukkan pilihan:")
@@ -239,7 +291,7 @@ func main() {
 									case 1:
 										result, permit := metode.AddMetode()
 										if permit {
-											fmt.Println("Barang berhasil ditambahkan dengan detail berikut:")
+											fmt.Println("Metode Pembayaran berhasil ditambahkan dengan detail berikut:")
 											fmt.Printf("Nama Metode: %s\n", result.Method_name)
 										}
 
@@ -257,7 +309,7 @@ func main() {
 										fmt.Scanln(&metodeID)
 										result, permit := metode.UpdateMetode(metodeID)
 										if permit {
-											fmt.Println("Barang berhasil diperbarui dengan detail berikut:")
+											fmt.Println("Metode Pembayaran berhasil diperbarui dengan detail berikut:")
 											fmt.Printf("ID: %d\nNama Metode: %s\n", result.ID, result.Method_name)
 										}
 									case 4:
@@ -267,7 +319,7 @@ func main() {
 
 										permit := metode.DeleteMetode(metodeID)
 										if permit {
-											fmt.Println("Tugas berhasil dihapus")
+											fmt.Println("Metode Pembayaran berhasil dihapus")
 										}
 									case 5:
 										return
@@ -276,6 +328,57 @@ func main() {
 									}
 								}
 							case 3:
+								for permit {
+									fmt.Println("======Menu Customer========")
+									fmt.Println("1. Tambah Data Customer")
+									fmt.Println("2. Tampilkan Daftar Customer")
+									fmt.Println("3. Update Data Customer")
+									fmt.Println("4. Hapus Data Customer")
+									fmt.Println("5. Keluar")
+									fmt.Print("Pilihan: ")
+									var choice int
+									fmt.Scanln(&choice)
+
+									switch choice {
+									case 1:
+										result, permit := customer.AddCustomer()
+										if permit {
+											fmt.Println("Barang berhasil ditambahkan dengan detail berikut:")
+											fmt.Printf("Nama Customer: %s\n", result.Nama)
+										}
+
+									case 2:
+										result, permit := customer.ShowCustomer()
+										if permit {
+											for _, m := range result {
+												fmt.Println("===Daftar Customer===")
+												fmt.Printf("No HP: %d\nNama : %s\nAlamat: %s\nEmail: %s\n", m.No_hp, m.Nama, m.Alamat, m.Email)
+											}
+										}
+									case 3:
+										var no_Hp uint
+										fmt.Print("Masukkan No HP Customer yang akan diperbarui: ")
+										fmt.Scanln(&no_Hp)
+										result, permit := customer.UpdateCustomer(no_Hp)
+										if permit {
+											fmt.Println("Data Customer berhasil diperbarui dengan detail berikut:")
+											fmt.Printf("No HP: %d\nNama : %s\nAlamat: %s\nEmail: %s\n", result.No_hp, result.Nama, result.Alamat, result.Email)
+										}
+									case 4:
+										var no_Hp uint
+										fmt.Print("Masukkan No HP Customer yang akan dihapus: ")
+										fmt.Scanln(&no_Hp)
+
+										permit := customer.DeleteCustomer(no_Hp)
+										if permit {
+											fmt.Println("Data Customer berhasil dihapus")
+										}
+									case 5:
+										return
+									default:
+										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
+									}
+								}
 							case 4:
 							case 0:
 								permit = false

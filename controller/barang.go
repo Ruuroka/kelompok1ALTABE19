@@ -28,7 +28,6 @@ func (ts *BarangSystem) AddBarang(userID uint) (model.Barang, bool) {
 	fmt.Scanln(&newBarang.Stock)
 	newBarang.UserID = userID
 
-	// Tambahkan barang ke database
 	err := ts.DB.Create(newBarang).Error
 	if err != nil {
 		fmt.Println("input error:", err.Error())
