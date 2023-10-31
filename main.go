@@ -83,7 +83,7 @@ func main() {
 										if permit {
 											for _, b := range result {
 												fmt.Println("===Daftar Barang===")
-												fmt.Printf("ID: %d\nNama: %s\nHarga: %s\nStok: %d\nNama Editor: %d \n", b.ID, b.Nama_barang, b.Harga_barang, b.Stock, b.UserID)
+												fmt.Printf("ID: %d\nNama: %s\nDeskripsi:%s\nHarga: %s\nStok: %d\nNama Editor: %d \n", b.ID, b.Nama_barang, b.Desc_barang, b.Harga_barang, b.Stock, b.UserID)
 											}
 										}
 									case 3:
@@ -93,7 +93,7 @@ func main() {
 										result, permit := barang.UpdateBarang(result.ID, barangID)
 										if permit {
 											fmt.Println("Barang berhasil diperbarui dengan detail berikut:")
-											fmt.Printf("ID: %d\nNama: %s\nHarga: %s\nStok: %d\n Nama Editor:%d", result.ID, result.Nama_barang, result.Harga_barang, result.Stock, result.UserID)
+											fmt.Printf("ID: %d\nNama: %s\nDeskripsi: %s\nHarga: %s\nStok: %d\n Nama Editor:%d", result.ID, result.Nama_barang, result.Desc_barang, result.Harga_barang, result.Stock, result.UserID)
 										}
 									case 4:
 										var barangID uint
@@ -340,7 +340,7 @@ func main() {
 										if permit {
 											for _, b := range result {
 												fmt.Println("===Daftar Barang===")
-												fmt.Printf("ID: %d\nNama: %s\nHarga: %s\nStok: %d\nNama Editor: %d \n", b.ID, b.Nama_barang, b.Harga_barang, b.Stock, b.UserID)
+												fmt.Printf("ID: %d\nNama: %s\nDeskripsi:%s\nHarga: %s\nStok: %d\nNama Editor: %d \n", b.ID, b.Nama_barang, b.Desc_barang, b.Harga_barang, b.Stock, b.UserID)
 											}
 										}
 									case 3:
@@ -350,7 +350,7 @@ func main() {
 										result, permit := barang.UpdateBarang(result.ID, barangID)
 										if permit {
 											fmt.Println("Barang berhasil diperbarui dengan detail berikut:")
-											fmt.Printf("ID: %d\nNama: %s\nHarga: %s\nStok: %d\n Nama Editor:%d", result.ID, result.Nama_barang, result.Harga_barang, result.Stock, result.UserID)
+											fmt.Printf("ID: %d\nNama: %s\nDeskripsi: %s\nHarga: %s\nStok: %d\n Nama Editor:%d", result.ID, result.Nama_barang, result.Desc_barang, result.Harga_barang, result.Stock, result.UserID)
 										}
 									case 4:
 										fmt.Println("Terima kasih! Keluar dari program.")
