@@ -5,6 +5,7 @@ package controller
 import (
 	"fmt"
 	"kelompok1ALTABE19/model"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -13,7 +14,7 @@ type TransaksiSystem struct {
 	DB *gorm.DB
 }
 
-func (ts *TransaksiSystem) AddTransaksi(userID uint, no_Hp uint, metodeID uint) (model.Transaksi, bool) {
+func (ts *TransaksiSystem) AddTransaksi(userID uint, no_Hp uint, metodeID uint, newTanggal time.Time) (model.Transaksi, bool) {
 	var newTransaksi = model.Transaksi{
 		UserID:    userID,
 		No_hp:     no_Hp,
@@ -31,7 +32,7 @@ func (ts *TransaksiSystem) AddTransaksi(userID uint, no_Hp uint, metodeID uint) 
 
 func (ts *TransaksiSystem) ShowTransaksi(userID uint) ([]model.Transaksi, bool) {
 	var transaksi []model.Transaksi
-	ts.DB.Where("user_id = ?", userID).Find(&transaksi)
+	ts.DB.Find(&transaksi)
 
 	if len(transaksi) == 0 {
 		fmt.Println("Daftar transaksi kosong.")
@@ -40,15 +41,18 @@ func (ts *TransaksiSystem) ShowTransaksi(userID uint) ([]model.Transaksi, bool) 
 	return transaksi, true
 }
 
-func (ts *TransaksiSystem) UpdateTransaksi(userID uint, no_Nota uint, no_Hp uint, metodeID uint) (model.Transaksi, bool) {
+func (ts *TransaksiSystem) UpdateTransaksi(userID uint, no_Nota uint, no_Hp uint, metodeID uint, newTanggal time.Time) (model.Transaksi, bool) {
 	existingTransaksi := model.Transaksi{}
 	err := ts.DB.Where("user_id = ? AND no_nota = ?", userID, no_Nota).First(&existingTransaksi).Error
 	if err != nil {
 		return model.Transaksi{}, false
 	}
-
+	existingTransaksi.UserID = userID
 	existingTransaksi.No_hp = no_Hp
 	existingTransaksi.Id_metode = metodeID
+
+	// existingTransaksi.No_hp = no_Hp
+	// existingTransaksi.Id_metode = metodeID
 
 	err = ts.DB.Save(&existingTransaksi).Error
 	if err != nil {
@@ -58,9 +62,9 @@ func (ts *TransaksiSystem) UpdateTransaksi(userID uint, no_Nota uint, no_Hp uint
 	return existingTransaksi, true
 }
 
-func (ts *TransaksiSystem) DeleteTransaksi(userID uint, transaksiID uint) bool {
+func (ts *TransaksiSystem) DeleteTransaksi(userID uint, no_Nota uint) bool {
 	existingTransaksi := model.Transaksi{}
-	err := ts.DB.Where("user_id = ? AND id = ?", userID, transaksiID).First(&existingTransaksi).Error
+	err := ts.DB.Where("user_id = ? AND no_nota = ?", userID, no_Nota).First(&existingTransaksi).Error
 	if err != nil {
 		return false
 	}
