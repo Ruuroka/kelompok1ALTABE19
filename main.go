@@ -78,7 +78,7 @@ func main() {
 										result, permit := barang.AddBarang(result.ID)
 										if permit {
 											fmt.Println("Barang berhasil ditambahkan dengan detail berikut:")
-											fmt.Printf("ID: %d\nNama: %s\nHarga: %s\nStok: %d\n", result.ID, result.Nama_barang, result.Harga_barang, result.Stock)
+											fmt.Printf("ID: %d\nNama: %s\nHarga: %d\nStok: %d\n", result.ID, result.Nama_barang, result.Harga_barang, result.Stock)
 										}
 
 									case 2:
