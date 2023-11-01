@@ -339,11 +339,15 @@ func main() {
 												resultTransaksi.Nota_transaksi, resultTransaksi.Id_barang, resultTransaksi.Jumlah_barang, resultTransaksi.Total_harga, resultTransaksi.Status_pembayaran)
 										}
 									case 2:
-										result, permit := transaksi.ShowTransaksi(result.ID)
+										var notaTransaksi uint
+										fmt.Print("Masukkan Nota Transaksi: ")
+										fmt.Scanln(&notaTransaksi)
+										result, permit := transaksi_detail.ShowTransaksiDetail(notaTransaksi)
 										if permit {
-											for _, m := range result {
-												fmt.Println("===Daftar Customer===")
-												fmt.Printf("No Nota: %d\nTanggal Transaksi : %s\nUser ID: %d\nNo HP: %d\nID Metode :%d\n", m.No_nota, m.Tanggal_transaksi, m.UserID, m.No_hp, m.Id_metode)
+											for _, transaksi := range result {
+												fmt.Println("===Daftar Detail Transaksi===")
+												fmt.Printf("Nota Transaksi: %d, ID Barang: %d, Jumlah Barang: %d, Total Harga: %f, Status Pembayaran: %s\n",
+													transaksi.Nota_transaksi, transaksi.Id_barang, transaksi.Jumlah_barang, transaksi.Total_harga, transaksi.Status_pembayaran)
 											}
 										}
 									case 3:
@@ -371,11 +375,14 @@ func main() {
 											fmt.Printf("No Nota: %d\nTanggal Transaksi : %s\nUser ID: %d\nNo HP: %d\nID Metode :%d\n", result.No_nota, result.Tanggal_transaksi, result.UserID, result.No_hp, result.Id_metode)
 										}
 									case 4:
-										var no_Nota uint
-										fmt.Print("Masukkan No Hp Customer yang akan dihapus: ")
-										fmt.Scanln(&no_Nota)
+										var notaTransaksi uint
+										var idBarang uint
+										fmt.Print("Masukkan Nota Transaksi yang akan dihapus detailnya: ")
+										fmt.Scanln(&notaTransaksi)
+										fmt.Print("Masukkan ID Barang yang akan dihapus detailnya: ")
+										fmt.Scanln(&idBarang)
 
-										permit := transaksi.DeleteTransaksi(result.ID, no_Nota)
+										permit := transaksi_detail.DeleteTransaksiDetail(notaTransaksi, idBarang)
 										if permit {
 											fmt.Println("Data Customer berhasil dihapus")
 										}
