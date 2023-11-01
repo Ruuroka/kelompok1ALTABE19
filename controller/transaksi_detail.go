@@ -14,6 +14,32 @@ type TransaksiDetailSystem struct {
 }
 
 func (tds *TransaksiDetailSystem) AddTransaksiDetail(notaTransaksi uint, idBarang uint, jumlahBarang uint, totalHarga float64, statusPembayaran string) (model.TransaksiDetail, bool) {
+	var hargaBarang float64
+	err := tds.DB.Model(&model.Barang{}).Where("id = ?", idBarang).Pluck("harga_barang", &hargaBarang).Error
+	if err != nil {
+		fmt.Println("Error mengambil harga barang:", err)
+		return model.TransaksiDetail{}, false
+	}
+	totalHarga = hargaBarang * float64(jumlahBarang)
+
+	var barang model.Barang
+	if err := tds.DB.First(&barang, idBarang).Error; err != nil {
+		fmt.Println("Error mengambil data barang:", err)
+		return model.TransaksiDetail{}, false
+	}
+
+	if barang.Stock < jumlahBarang {
+		fmt.Println("Stock tidak mencukupi untuk jumlah barang yang diminta")
+		return model.TransaksiDetail{}, false
+	}
+
+	barang.Stock -= jumlahBarang
+
+	if err := tds.DB.Save(&barang).Error; err != nil {
+		fmt.Println("Error mengupdate stock barang:", err)
+		return model.TransaksiDetail{}, false
+	}
+
 	var newTransaksiDetail = model.TransaksiDetail{
 		Nota_transaksi:    notaTransaksi,
 		Id_barang:         idBarang,
@@ -22,7 +48,7 @@ func (tds *TransaksiDetailSystem) AddTransaksiDetail(notaTransaksi uint, idBaran
 		Status_pembayaran: statusPembayaran,
 	}
 
-	err := tds.DB.Create(&newTransaksiDetail).Error
+	err = tds.DB.Create(&newTransaksiDetail).Error
 	if err != nil {
 		fmt.Println("Input error:", err.Error())
 		return model.TransaksiDetail{}, false
