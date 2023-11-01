@@ -69,10 +69,39 @@ func (tds *TransaksiDetailSystem) ShowTransaksiDetail(notaTransaksi uint) ([]mod
 	return transaksiDetails, true
 }
 
-func (tds *TransaksiDetailSystem) UpdateTransaksiDetail(notaTransaksi uint, idBarang uint, jumlahBarang uint, totalHarga float64, statusPembayaran string) (model.TransaksiDetail, bool) {
+func (tds *TransaksiDetailSystem) UpdateTransaksiDetail(notaTransaksi uint, idBarang uint, jumlahBarang uint, statusPembayaran string) (model.TransaksiDetail, bool) {
 	existingTransaksiDetail := model.TransaksiDetail{}
 	err := tds.DB.Where("nota_transaksi = ? AND id_barang = ?", notaTransaksi, idBarang).First(&existingTransaksiDetail).Error
 	if err != nil {
+		return model.TransaksiDetail{}, false
+	}
+
+	var hargaBarang float64
+	err = tds.DB.Model(&model.Barang{}).Where("id = ?", idBarang).Pluck("harga_barang", &hargaBarang).Error
+	if err != nil {
+		fmt.Println("Error mengambil harga barang:", err)
+		return model.TransaksiDetail{}, false
+	}
+	totalHarga := hargaBarang * float64(jumlahBarang)
+
+	var barang model.Barang
+	if err := tds.DB.First(&barang, idBarang).Error; err != nil {
+		fmt.Println("Error mengambil data barang:", err)
+		return model.TransaksiDetail{}, false
+	}
+
+	if barang.Stock < jumlahBarang {
+		fmt.Println("Stock tidak mencukupi untuk jumlah barang yang diminta")
+		return model.TransaksiDetail{}, false
+	}
+
+	barang.Stock -= jumlahBarang
+	// Disesuaikan dengan nama field yang benar di model Barang
+	barang.Harga_barang = totalHarga // Update harga_barang sesuai kebutuhan
+
+	err = tds.DB.Save(&barang).Error
+	if err != nil {
+		fmt.Println("Error mengupdate data barang:", err)
 		return model.TransaksiDetail{}, false
 	}
 
