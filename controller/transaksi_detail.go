@@ -69,7 +69,7 @@ func (tds *TransaksiDetailSystem) ShowTransaksiDetail(notaTransaksi uint) ([]mod
 	return transaksiDetails, true
 }
 
-func (tds *TransaksiDetailSystem) UpdateTransaksiDetail(notaTransaksi uint, idBarang uint, jumlahBarang uint, statusPembayaran string) (model.TransaksiDetail, bool) {
+func (tds *TransaksiDetailSystem) UpdateTransaksiDetail(notaTransaksi uint, idBarang uint, jumlahBarang uint, totalHarga float64, statusPembayaran string) (model.TransaksiDetail, bool) {
 	existingTransaksiDetail := model.TransaksiDetail{}
 	err := tds.DB.Where("nota_transaksi = ? AND id_barang = ?", notaTransaksi, idBarang).First(&existingTransaksiDetail).Error
 	if err != nil {
@@ -82,7 +82,7 @@ func (tds *TransaksiDetailSystem) UpdateTransaksiDetail(notaTransaksi uint, idBa
 		fmt.Println("Error mengambil harga barang:", err)
 		return model.TransaksiDetail{}, false
 	}
-	totalHarga := hargaBarang * float64(jumlahBarang)
+	totalHarga = hargaBarang * float64(jumlahBarang)
 
 	var barang model.Barang
 	if err := tds.DB.First(&barang, idBarang).Error; err != nil {

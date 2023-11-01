@@ -75,6 +75,25 @@ func (ts *BarangSystem) UpdateBarang(userID uint, barangID uint) (model.Barang, 
 	return existingBarang, true
 }
 
+func (ts *BarangSystem) UpdateStock(userID uint, barangID uint) (model.Barang, bool) {
+	existingBarang := model.Barang{}
+	err := ts.DB.First(&existingBarang, barangID).Error
+	if err != nil {
+		return model.Barang{}, false
+	}
+
+	fmt.Print("Stok Barang: ")
+	fmt.Scanln(&existingBarang.Stock)
+	existingBarang.UserID = userID
+
+	err = ts.DB.Save(&existingBarang).Error
+	if err != nil {
+		return model.Barang{}, false
+	}
+
+	return existingBarang, true
+}
+
 func (ts *BarangSystem) DeleteBarang(userID uint, barangID uint) bool {
 	existingBarang := model.Barang{}
 	err := ts.DB.Where("id = ? AND user_id = ?", barangID, userID).First(&existingBarang).Error
