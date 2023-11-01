@@ -68,25 +68,26 @@ func main() {
 									fmt.Println("3. Update Barang")
 									fmt.Println("4. Hapus Barang")
 									fmt.Println("5. Update Stock")
-									fmt.Println("6. Keluar")
+									fmt.Println("0. Kembali") // Mengganti "6. Keluar" menjadi "0. Kembali"
 									fmt.Print("Pilihan: ")
 									var choice int
 									fmt.Scanln(&choice)
 
 									switch choice {
+									case 0:
+										permit = false // Kembali ke menu sebelumnya
 									case 1:
 										result, permit := barang.AddBarang(result.ID)
 										if permit {
 											fmt.Println("Barang berhasil ditambahkan dengan detail berikut:")
-											fmt.Printf("ID: %d\nNama: %s\nHarga: %.2f\nStok: %d\n", result.ID, result.Nama_barang, result.Harga_barang, result.Stock)
+											fmt.Printf("ID: %d\nNama: %s\nHarga: %s\nStok: %d\n", result.ID, result.Nama_barang, result.Harga_barang, result.Stock)
 										}
-
 									case 2:
 										result, permit := barang.ShowBarang(result.ID)
 										if permit {
 											for _, b := range result {
 												fmt.Println("===Daftar Barang===")
-												fmt.Printf("ID: %d\nNama: %s\nDeskripsi:%s\nHarga: %.2f\nStok: %d\nNama Editor: %d \n", b.ID, b.Nama_barang, b.Desc_barang, b.Harga_barang, b.Stock, b.UserID)
+												fmt.Printf("ID: %d\nNama: %s\nHarga: %s\nStok: %d\nNama Editor: %d \n", b.ID, b.Nama_barang, b.Harga_barang, b.Stock, b.UserID)
 											}
 										}
 									case 3:
@@ -96,7 +97,7 @@ func main() {
 										result, permit := barang.UpdateBarang(result.ID, barangID)
 										if permit {
 											fmt.Println("Barang berhasil diperbarui dengan detail berikut:")
-											fmt.Printf("ID: %d\nNama: %s\nDeskripsi: %s\nHarga: %.2f\nStok: %d\n Nama Editor:%d", result.ID, result.Nama_barang, result.Desc_barang, result.Harga_barang, result.Stock, result.UserID)
+											fmt.Printf("ID: %d\nNama: %s\nHarga: %s\nStok: %d\n Nama Editor:%d", result.ID, result.Nama_barang, result.Harga_barang, result.Stock, result.UserID)
 										}
 									case 4:
 										var barangID uint
@@ -108,20 +109,12 @@ func main() {
 											fmt.Println("Tugas berhasil dihapus")
 										}
 									case 5:
-										var barangID uint
-										fmt.Print("Masukkan ID barang yang akan diperbarui: ")
-										fmt.Scanln(&barangID)
-										result, permit := barang.UpdateStock(result.ID, barangID)
-										if permit {
-											fmt.Println("Stock Barang berhasil diperbarui dengan detail berikut:")
-											fmt.Printf("ID: %d\nNama: %s\nStok: %d\n Nama Editor:%d", result.ID, result.Nama_barang, result.Stock, result.UserID)
-										}
-									case 6:
-										return
+										// Logika untuk Update Stock
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
 								}
+
 							case 3:
 								for permit {
 									fmt.Println("======Menu Metode Transaksi========")
@@ -129,12 +122,14 @@ func main() {
 									fmt.Println("2. Tampilkan Metode Transaksi")
 									fmt.Println("3. Update Metode Transaksi")
 									fmt.Println("4. Hapus Metode Transaksi")
-									fmt.Println("5. Keluar")
+									fmt.Println("0. kembali")
 									fmt.Print("Pilihan: ")
 									var choice int
 									fmt.Scanln(&choice)
 
 									switch choice {
+									case 0:
+										permit = false
 									case 1:
 										result, permit := metode.AddMetode()
 										if permit {
@@ -168,8 +163,6 @@ func main() {
 										if permit {
 											fmt.Println("Metode Pembayaran berhasil dihapus")
 										}
-									case 5:
-										return
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
@@ -181,12 +174,14 @@ func main() {
 									fmt.Println("2. Tampilkan Daftar Customer")
 									fmt.Println("3. Update Data Customer")
 									fmt.Println("4. Hapus Data Customer")
-									fmt.Println("5. Keluar")
+									fmt.Println("0. Kembali")
 									fmt.Print("Pilihan: ")
 									var choice int
 									fmt.Scanln(&choice)
 
 									switch choice {
+									case 0:
+										permit = false
 									case 1:
 										result, permit := customer.AddCustomer()
 										if permit {
@@ -220,8 +215,6 @@ func main() {
 										if permit {
 											fmt.Println("Data Customer berhasil dihapus")
 										}
-									case 5:
-										return
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
@@ -233,12 +226,14 @@ func main() {
 									fmt.Println("2. Tampilkan Daftar Transaksi")
 									fmt.Println("3. Update Data Transaksi")
 									fmt.Println("4. Hapus Data Transaksi")
-									fmt.Println("5. Keluar")
+									fmt.Println("0. Kembali")
 									fmt.Print("Pilihan: ")
 									var choice int
 									fmt.Scanln(&choice)
 
 									switch choice {
+									case 0:
+										permit = false
 									case 1:
 										var no_Hp uint
 										var metodeID uint
@@ -301,8 +296,6 @@ func main() {
 										if permit {
 											fmt.Println("Data Customer berhasil dihapus")
 										}
-									case 5:
-										return
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
@@ -314,12 +307,14 @@ func main() {
 									fmt.Println("2. Cari Detail Transaksi")
 									fmt.Println("3. Update Detail Transaksi")
 									fmt.Println("4. Hapus Detail Transaksi")
-									fmt.Println("5. Keluar")
+									fmt.Println("0. Kembali")
 									fmt.Print("Pilihan: ")
 									var choice int
 									fmt.Scanln(&choice)
 
 									switch choice {
+									case 0:
+										permit = false
 									case 1:
 										resulBarang, permitBarang := barang.ShowBarang(result.ID)
 										if permitBarang {
@@ -392,8 +387,6 @@ func main() {
 										if permit {
 											fmt.Println("Data Customer berhasil dihapus")
 										}
-									case 5:
-										return
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
@@ -427,13 +420,15 @@ func main() {
 									fmt.Println("2. Tampilkan Barang")
 									fmt.Println("3. Update Barang")
 									fmt.Println("4. Update Stock")
-									fmt.Println("5. Keluar")
+									fmt.Println("0. Kembali")
 									fmt.Print("Pilihan: ")
 
 									var choice int
 									fmt.Scanln(&choice)
 
 									switch choice {
+									case 0:
+										permit = false
 									case 1:
 										result, permit := barang.AddBarang(result.ID)
 										if permit {
@@ -466,8 +461,6 @@ func main() {
 											fmt.Println("Stock Barang berhasil diperbarui dengan detail berikut:")
 											fmt.Printf("ID: %d\nNama: %s\nStok: %d\n Nama Editor:%d", result.ID, result.Nama_barang, result.Stock, result.UserID)
 										}
-									case 5:
-										return
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
@@ -479,12 +472,14 @@ func main() {
 									fmt.Println("2. Tampilkan Metode Transaksi")
 									fmt.Println("3. Update Metode Transaksi")
 									fmt.Println("4. Hapus Metode Transaksi")
-									fmt.Println("5. Keluar")
+									fmt.Println("0. Kembali")
 									fmt.Print("Pilihan: ")
 									var choice int
 									fmt.Scanln(&choice)
 
 									switch choice {
+									case 0:
+										permit = false
 									case 1:
 										result, permit := metode.AddMetode()
 										if permit {
@@ -518,8 +513,6 @@ func main() {
 										if permit {
 											fmt.Println("Metode Pembayaran berhasil dihapus")
 										}
-									case 5:
-										return
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
@@ -531,12 +524,14 @@ func main() {
 									fmt.Println("2. Tampilkan Daftar Customer")
 									fmt.Println("3. Update Data Customer")
 									fmt.Println("4. Hapus Data Customer")
-									fmt.Println("5. Keluar")
+									fmt.Println("0. Kembali")
 									fmt.Print("Pilihan: ")
 									var choice int
 									fmt.Scanln(&choice)
 
 									switch choice {
+									case 0:
+										permit = false
 									case 1:
 										result, permit := customer.AddCustomer()
 										if permit {
@@ -570,8 +565,6 @@ func main() {
 										if permit {
 											fmt.Println("Data Customer berhasil dihapus")
 										}
-									case 5:
-										return
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
@@ -582,12 +575,14 @@ func main() {
 									fmt.Println("1. Tambah Data Transaksi")
 									fmt.Println("2. Tampilkan Daftar Transaksi")
 									fmt.Println("3. Hapus Data Transaksi")
-									fmt.Println("4. Keluar")
+									fmt.Println("0. Kembali")
 									fmt.Print("Pilihan: ")
 									var choice int
 									fmt.Scanln(&choice)
 
 									switch choice {
+									case 0:
+										permit = false
 									case 1:
 										var no_Hp uint
 										var metodeID uint
@@ -626,8 +621,6 @@ func main() {
 										if permit {
 											fmt.Println("Data Customer berhasil dihapus")
 										}
-									case 4:
-										return
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
@@ -645,6 +638,8 @@ func main() {
 									fmt.Scanln(&choice)
 
 									switch choice {
+									case 0:
+										permit = false
 									case 1:
 										resulBarang, permitBarang := barang.ShowBarang(result.ID)
 										if permitBarang {
@@ -717,8 +712,6 @@ func main() {
 										if permit {
 											fmt.Println("Data Customer berhasil dihapus")
 										}
-									case 5:
-										return
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
