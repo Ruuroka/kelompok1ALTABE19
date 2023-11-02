@@ -230,7 +230,7 @@ func main() {
 									}
 								}
 							case 5:
-								inMenuTransaksi := false
+								inMenuTransaksi := true
 								for inMenuTransaksi {
 									fmt.Println("======Menu Transaksi========")
 									fmt.Println("1. Tambah Data Transaksi")
@@ -598,7 +598,7 @@ func main() {
 										fmt.Scanln(&metodeID)
 										fmt.Print("Masukkan Tanggal Transaksi baru: ")
 										fmt.Scanln(&tanggalTransaksi)
-										var dateFormat = "2006-01-02"
+										var dateFormat = "01-02-2006"
 										newTanggal, err := time.Parse(dateFormat, tanggalTransaksi)
 										if err != nil {
 											fmt.Println("Error:", err)
@@ -607,7 +607,7 @@ func main() {
 										result, permit := transaksi.AddTransaksi(result.ID, no_Hp, metodeID, newTanggal)
 										if permit {
 											fmt.Println("Data Transaksi berhasil ditambahkan dengan detail berikut:")
-											fmt.Printf("No Nota: %d\nNama Editor: %d\n", result.No_nota, result.UserID)
+											fmt.Printf("No Nota: %d\n", result.No_nota)
 										}
 									case 2:
 										result, permit := transaksi.ShowTransaksi(result.ID)
