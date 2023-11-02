@@ -241,7 +241,7 @@ func main() {
 
 									switch choice {
 									case 0:
-										inDetailTransaksi = true
+										inDetailTransaksi = false
 									case 1:
 										resulBarang, permitBarang := barang.ShowBarang(result.ID)
 										if permitBarang {
@@ -265,8 +265,8 @@ func main() {
 										if permit {
 											for _, transaksi := range result {
 												fmt.Println("===Daftar Detail Transaksi===")
-												fmt.Printf("Nota Transaksi: %d\nNama Customer:%s\nNama User:%s\nNama Metode:%s\nID Barang: %d\nJumlah Barang: %d\nTotal Harga: %d\n",
-													transaksi.Nota_transaksi, transaksi.NamaCustomer, transaksi.NamaUser, transaksi.NamaMetode, transaksi.Id_barang, transaksi.Jumlah_barang, transaksi.Total_harga)
+												fmt.Printf("Nota Transaksi: %d\nNama Customer:%s\nNama User:%s\nNama Metode:%s\nID Barang: %d\nJumlah Barang: %d\nTotal Harga: %d\nTanggal Transaksi:%s\n",
+													transaksi.Nota_transaksi, transaksi.NamaCustomer, transaksi.NamaUser, transaksi.NamaMetode, transaksi.Id_barang, transaksi.Jumlah_barang, transaksi.Total_harga, transaksi.CreatedAt)
 											}
 										}
 									case 3:
