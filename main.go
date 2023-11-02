@@ -247,7 +247,7 @@ func main() {
 										if permitBarang {
 											for _, b := range resulBarang {
 												fmt.Println("===Daftar Barang===")
-												fmt.Printf("ID: %d\nNama: %s\nDeskripsi:%s\nHarga: %d\nStok: %d\nNama Editor: %d \n", b.ID, b.Nama_barang, b.Desc_barang, b.Harga_barang, b.Stock, b.UserID)
+												fmt.Printf("ID: %d\nNama: %s\nDeskripsi:%s\nHarga: %d\nStok: %d\nNama Editor: %s \n", b.ID, b.Nama_barang, b.Desc_barang, b.Harga_barang, b.Stock, b.User.Nama)
 											}
 										}
 										fmt.Println("====Masukan Detail Transaksi====")
@@ -265,8 +265,8 @@ func main() {
 										if permit {
 											for _, transaksi := range result {
 												fmt.Println("===Daftar Detail Transaksi===")
-												fmt.Printf("Nota Transaksi: %d, ID Barang: %d, Jumlah Barang: %d, Total Harga: %d",
-													transaksi.Nota_transaksi, transaksi.Id_barang, transaksi.Jumlah_barang, transaksi.Total_harga)
+												fmt.Printf("Nota Transaksi: %d\nNama Customer:%s\nNama User:%s\nNama Metode:%s\nID Barang: %d\nJumlah Barang: %d\nTotal Harga: %d\n",
+													transaksi.Nota_transaksi, transaksi.NamaCustomer, transaksi.NamaUser, transaksi.NamaMetode, transaksi.Id_barang, transaksi.Jumlah_barang, transaksi.Total_harga)
 											}
 										}
 									case 3:
@@ -470,12 +470,11 @@ func main() {
 									switch choice {
 									case 0:
 										inMenuTransaksiDetail = false
-									case 1:
 										resulBarang, permitBarang := barang.ShowBarang(result.ID)
 										if permitBarang {
 											for _, b := range resulBarang {
 												fmt.Println("===Daftar Barang===")
-												fmt.Printf("ID: %d\nNama: %s\nDeskripsi:%s\nHarga: %d\nStok: %d\nNama Editor: %d \n", b.ID, b.Nama_barang, b.Desc_barang, b.Harga_barang, b.Stock, b.UserID)
+												fmt.Printf("ID: %d\nNama: %s\nDeskripsi:%s\nHarga: %d\nStok: %d\nNama Editor: %s\n", b.ID, b.Nama_barang, b.Desc_barang, b.Harga_barang, b.Stock, b.User.Nama)
 											}
 										}
 										fmt.Println("====Masukan Detail Transaksi====")
@@ -493,8 +492,8 @@ func main() {
 										if permit {
 											for _, transaksi := range result {
 												fmt.Println("===Daftar Detail Transaksi===")
-												fmt.Printf("Nota Transaksi: %d, ID Barang: %d, Jumlah Barang: %d, Total Harga: %d",
-													transaksi.Nota_transaksi, transaksi.Id_barang, transaksi.Jumlah_barang, transaksi.Total_harga)
+												fmt.Printf("Nota Transaksi: %d\nNama Customer:%s\nNama User:%s\nNama Metode:%s\nID Barang: %d\nJumlah Barang: %d\nTotal Harga: %d\n",
+													transaksi.Nota_transaksi, transaksi.NamaCustomer, transaksi.NamaUser, transaksi.NamaMetode, transaksi.Id_barang, transaksi.Jumlah_barang, transaksi.Total_harga)
 											}
 										}
 									default:

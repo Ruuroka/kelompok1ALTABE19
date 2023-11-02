@@ -42,32 +42,30 @@ func (tds *TransaksiDetailSystem) AddTransaksiDetail(userNama string) (model.Tra
 	newTransaksiDetail.NamaMetode = transaksiMetode.Method_name
 
 	var transaksiBarangbaru model.Barang
-	var transaksiBaru model.TransaksiDetail
 
 	if err := tds.DB.First(&transaksiBarangbaru, newTransaksiDetail.Id_barang).Error; err != nil {
 		fmt.Println("Error mengambil data barang:", err)
 		return model.TransaksiDetail{}, false
 	}
-
-	if transaksiBarangbaru.Stock < transaksiBaru.Jumlah_barang {
+	if transaksiBarangbaru.Stock < newTransaksiDetail.Jumlah_barang {
 		fmt.Println("Stock tidak mencukupi untuk jumlah barang yang diminta")
 		return model.TransaksiDetail{}, false
 	}
 
-	transaksiBarangbaru.Stock -= transaksiBaru.Jumlah_barang
+	transaksiBarangbaru.Stock -= newTransaksiDetail.Jumlah_barang
 
 	if err := tds.DB.Save(&transaksiBarangbaru).Error; err != nil {
 		fmt.Println("Error mengupdate stock barang:", err)
 		return model.TransaksiDetail{}, false
 	}
 
-	// var hargaBarang float64
-	err := tds.DB.Model(&transaksiBarangbaru).Where("id = ?", transaksiBarangbaru.ID).Pluck("harga_barang", &transaksiBarangbaru.Harga_barang).Error
+	var hargaBarang uint
+	err := tds.DB.Model(&transaksiBarangbaru).Where("id = ?", transaksiBarangbaru.ID).Pluck("harga_barang", &hargaBarang).Error
 	if err != nil {
 		fmt.Println("Error mengambil harga barang:", err)
 		return model.TransaksiDetail{}, false
 	}
-	transaksiBaru.Total_harga += transaksiBarangbaru.Harga_barang * transaksiBaru.Jumlah_barang
+	newTransaksiDetail.Total_harga = hargaBarang * newTransaksiDetail.Jumlah_barang
 
 	// newTransaksiDetail.NamaCustomer = newTransaksiDetail.NamaCustomer
 
