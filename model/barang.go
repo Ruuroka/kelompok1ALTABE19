@@ -6,7 +6,7 @@ type Barang struct {
 	gorm.Model
 	Nama_barang      string
 	Desc_barang      string
-	Harga_barang     float64
+	Harga_barang     uint
 	Stock            uint
 	UserID           uint
 	User             User
