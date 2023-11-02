@@ -266,8 +266,8 @@ func main() {
 										result, permit := transaksi.ShowTransaksi(result.ID)
 										if permit {
 											for _, m := range result {
-												fmt.Println("===Daftar Customer===")
-												fmt.Printf("No Nota: %d\nTanggal Transaksi : %s\nUser ID: %d\nNo HP: %d\nID Metode :%d\n", m.No_nota, m.Tanggal_transaksi, m.UserID, m.No_hp, m.Id_metode)
+												fmt.Println("===Daftar Transaksi===")
+												fmt.Printf("No Nota: %d\nTanggal Transaksi : %s\nNama Editor: %s\nNo HP: %d\nID Metode : %d\n", m.No_nota, m.Tanggal_transaksi, m.User.Nama, m.No_hp, m.Id_metode)
 											}
 										}
 									case 3:
@@ -604,8 +604,8 @@ func main() {
 										result, permit := transaksi.ShowTransaksi(result.ID)
 										if permit {
 											for _, m := range result {
-												fmt.Println("===Daftar Customer===")
-												fmt.Printf("No Nota: %d\nTanggal Transaksi : %s\nUser ID: %d\nNo HP: %d\nID Metode :%d\n", m.No_nota, m.Tanggal_transaksi, m.UserID, m.No_hp, m.Id_metode)
+												fmt.Println("===Daftar Transaksi===")
+												fmt.Printf("No Nota: %d\nTanggal Transaksi : %s\nNama Editor: %s\nNo HP: %d\nID Metode : %d\n", m.No_nota, m.Tanggal_transaksi, m.User.Nama, m.No_hp, m.Id_metode)
 											}
 										}
 									default:

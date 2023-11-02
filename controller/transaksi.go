@@ -32,7 +32,9 @@ func (ts *TransaksiSystem) AddTransaksi(userID uint, no_Hp uint, metodeID uint, 
 
 func (ts *TransaksiSystem) ShowTransaksi(userID uint) ([]model.Transaksi, bool) {
 	var transaksi []model.Transaksi
-	ts.DB.Find(&transaksi)
+	ts.DB.Joins("User").Find(&transaksi)
+	// ts.DB.Joins("Customer").Find(&transaksi)
+	// ts.DB.Joins("Metode_Pembayaran").Find(&transaksi)
 
 	if len(transaksi) == 0 {
 		fmt.Println("Daftar transaksi kosong.")
