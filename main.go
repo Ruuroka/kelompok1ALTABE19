@@ -42,9 +42,9 @@ func main() {
 				fmt.Println("Selamat datang ", result.Nama)
 				if result.Status_users == "admin" {
 					for permit {
-						fmt.Println("======Tampilan Admin========")
 						for permit {
-							fmt.Println("1. Tambahkann akun Pegawai")
+							fmt.Println("======Tampilan Admin========")
+							fmt.Println("1. Tambahkan akun Pegawai")
 							fmt.Println("2. Menu Barang")
 							fmt.Println("3. Menu Metode Transaksi")
 							fmt.Println("4. Menu Customer")
@@ -61,7 +61,8 @@ func main() {
 									fmt.Println(result, "Berhasil menambahkan data")
 								}
 							case 2:
-								for permit {
+								inMenuBarang := true
+								for inMenuBarang {
 									fmt.Println("======Menu Barang========")
 									fmt.Println("1. Tambah Barang")
 									fmt.Println("2. Tampilkan Barang")
@@ -75,7 +76,7 @@ func main() {
 
 									switch choice {
 									case 0:
-										permit = false
+										inMenuBarang = false
 									case 1:
 										result, permit := barang.AddBarang(result.ID)
 										if permit {
@@ -123,7 +124,8 @@ func main() {
 								}
 
 							case 3:
-								for permit {
+								inMetodeTransaksi := true
+								for inMetodeTransaksi {
 									fmt.Println("======Menu Metode Transaksi========")
 									fmt.Println("1. Tambah Metode Transaksi")
 									fmt.Println("2. Tampilkan Metode Transaksi")
@@ -136,7 +138,7 @@ func main() {
 
 									switch choice {
 									case 0:
-										permit = false
+										inMetodeTransaksi = false
 									case 1:
 										result, permit := metode.AddMetode()
 										if permit {
@@ -175,7 +177,8 @@ func main() {
 									}
 								}
 							case 4:
-								for permit {
+								inMenuCustomer := true
+								for inMenuCustomer {
 									fmt.Println("======Menu Customer========")
 									fmt.Println("1. Tambah Data Customer")
 									fmt.Println("2. Tampilkan Daftar Customer")
@@ -188,7 +191,7 @@ func main() {
 
 									switch choice {
 									case 0:
-										permit = false
+										inMenuCustomer = false
 									case 1:
 										result, permit := customer.AddCustomer()
 										if permit {
@@ -227,7 +230,8 @@ func main() {
 									}
 								}
 							case 5:
-								for permit {
+								inMenuTransaksi := false
+								for inMenuTransaksi {
 									fmt.Println("======Menu Transaksi========")
 									fmt.Println("1. Tambah Data Transaksi")
 									fmt.Println("2. Tampilkan Daftar Transaksi")
@@ -240,7 +244,7 @@ func main() {
 
 									switch choice {
 									case 0:
-										permit = false
+										inMenuTransaksi = false
 									case 1:
 										var no_Hp uint
 										var metodeID uint
@@ -308,7 +312,8 @@ func main() {
 									}
 								}
 							case 6:
-								for permit {
+								inDetailTransaksi := true
+								for inDetailTransaksi {
 									fmt.Println("======Menu Detail Transaksi========")
 									fmt.Println("1. Tambah Data Transaksi Detail")
 									fmt.Println("2. Cari Detail Transaksi")
@@ -321,7 +326,7 @@ func main() {
 
 									switch choice {
 									case 0:
-										permit = false
+										inDetailTransaksi = false
 									case 1:
 										resulBarang, permitBarang := barang.ShowBarang(result.ID)
 										if permitBarang {
@@ -408,8 +413,8 @@ func main() {
 					}
 				} else if result.Status_users == "" {
 					for permit {
-						fmt.Println("======Tampilan Pegawai========")
 						for permit {
+							fmt.Println("======Tampilan Pegawai========")
 							fmt.Println("1. Menu Barang")
 							fmt.Println("2. Menu Metode Transaksi")
 							fmt.Println("3. Menu Customer")
@@ -421,7 +426,8 @@ func main() {
 							fmt.Scanln(&menuLogin)
 							switch menuLogin {
 							case 1:
-								for {
+								inMenuBarang := true
+								for inMenuBarang {
 									fmt.Println("======Menu Barang========")
 									fmt.Println("1. Tambah Barang")
 									fmt.Println("2. Tampilkan Barang")
@@ -435,7 +441,7 @@ func main() {
 
 									switch choice {
 									case 0:
-										permit = false
+										inMenuBarang = false
 									case 1:
 										result, permit := barang.AddBarang(result.ID)
 										if permit {
@@ -473,7 +479,8 @@ func main() {
 									}
 								}
 							case 2:
-								for permit {
+								inMenuTransaksi := true
+								for inMenuTransaksi {
 									fmt.Println("======Menu Metode Transaksi========")
 									fmt.Println("1. Tambah Metode Transaksi")
 									fmt.Println("2. Tampilkan Metode Transaksi")
@@ -486,7 +493,7 @@ func main() {
 
 									switch choice {
 									case 0:
-										permit = false
+										inMenuTransaksi = false
 									case 1:
 										result, permit := metode.AddMetode()
 										if permit {
@@ -525,7 +532,8 @@ func main() {
 									}
 								}
 							case 3:
-								for permit {
+								inMenuCustomer := true
+								for inMenuCustomer {
 									fmt.Println("======Menu Customer========")
 									fmt.Println("1. Tambah Data Customer")
 									fmt.Println("2. Tampilkan Daftar Customer")
@@ -537,7 +545,7 @@ func main() {
 
 									switch choice {
 									case 0:
-										permit = false
+										inMenuCustomer = false
 									case 1:
 										result, permit := customer.AddCustomer()
 										if permit {
@@ -567,7 +575,8 @@ func main() {
 									}
 								}
 							case 4:
-								for permit {
+								inMenuTransaksi := true
+								for inMenuTransaksi {
 									fmt.Println("======Menu Transaksi========")
 									fmt.Println("1. Tambah Data Transaksi")
 									fmt.Println("2. Tampilkan Daftar Transaksi")
@@ -578,7 +587,7 @@ func main() {
 
 									switch choice {
 									case 0:
-										permit = false
+										inMenuTransaksi = false
 									case 1:
 										var no_Hp uint
 										var metodeID uint
@@ -613,19 +622,19 @@ func main() {
 									}
 								}
 							case 5:
-								for permit {
+								inMenuTransaksiDetail := true
+								for inMenuTransaksiDetail {
 									fmt.Println("======Menu Detail Transaksi========")
 									fmt.Println("1. Tambah Data Transaksi Detail")
 									fmt.Println("2. Cari Detail Transaksi")
 									fmt.Println("0. Kembali")
-									fmt.Println("5. Keluar")
 									fmt.Print("Pilihan: ")
 									var choice int
 									fmt.Scanln(&choice)
 
 									switch choice {
 									case 0:
-										permit = false
+										inMenuTransaksiDetail = false
 									case 1:
 										resulBarang, permitBarang := barang.ShowBarang(result.ID)
 										if permitBarang {
