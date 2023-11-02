@@ -87,7 +87,7 @@ func main() {
 										if permit {
 											for _, b := range result {
 												fmt.Println("===Daftar Barang===")
-												fmt.Printf("ID: %d\nNama: %s\nHarga: %2.f\nStok: %d\nNama Editor: %d \n", b.ID, b.Nama_barang, b.Harga_barang, b.Stock, b.UserID)
+												fmt.Printf("ID: %d\nNama: %s\nHarga: %2.f\nStok: %d\nNama Editor: %s\n", b.ID, b.Nama_barang, b.Harga_barang, b.Stock, b.User.Nama)
 											}
 										}
 									case 3:

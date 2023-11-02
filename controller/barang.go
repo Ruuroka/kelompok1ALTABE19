@@ -39,7 +39,11 @@ func (ts *BarangSystem) AddBarang(userID uint) (model.Barang, bool) {
 func (ts *BarangSystem) ShowBarang(userID uint) ([]model.Barang, bool) {
 	var barang []model.Barang
 	// ts.DB.InnerJoins("INNER JOIN users ON barangs.user_id = users.id").Find(&barang)
-	ts.DB.Find(&barang)
+	err := ts.DB.Where("user_id = ?", userID).Preload("User").Find(&barang).Error
+	if err != nil {
+		fmt.Println("Error fetching items:", err)
+		return nil, false
+	}
 
 	if len(barang) == 0 {
 		fmt.Println("Daftar barang kosong.")
