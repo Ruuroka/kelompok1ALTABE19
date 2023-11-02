@@ -68,26 +68,26 @@ func main() {
 									fmt.Println("3. Update Barang")
 									fmt.Println("4. Hapus Barang")
 									fmt.Println("5. Update Stock")
-									fmt.Println("0. Kembali") // Mengganti "6. Keluar" menjadi "0. Kembali"
+									fmt.Println("0. Kembali")
 									fmt.Print("Pilihan: ")
 									var choice int
 									fmt.Scanln(&choice)
 
 									switch choice {
 									case 0:
-										permit = false // Kembali ke menu sebelumnya
+										permit = false
 									case 1:
 										result, permit := barang.AddBarang(result.ID)
 										if permit {
 											fmt.Println("Barang berhasil ditambahkan dengan detail berikut:")
-											fmt.Printf("ID: %d\nNama: %s\nHarga: %s\nStok: %d\n", result.ID, result.Nama_barang, result.Harga_barang, result.Stock)
+											fmt.Printf("ID: %d\nNama: %s\nHarga: %2.f\nStok: %d\n", result.ID, result.Nama_barang, result.Harga_barang, result.Stock)
 										}
 									case 2:
 										result, permit := barang.ShowBarang(result.ID)
 										if permit {
 											for _, b := range result {
 												fmt.Println("===Daftar Barang===")
-												fmt.Printf("ID: %d\nNama: %s\nHarga: %s\nStok: %d\nNama Editor: %d \n", b.ID, b.Nama_barang, b.Harga_barang, b.Stock, b.UserID)
+												fmt.Printf("ID: %d\nNama: %s\nHarga: %2.f\nStok: %d\nNama Editor: %d \n", b.ID, b.Nama_barang, b.Harga_barang, b.Stock, b.UserID)
 											}
 										}
 									case 3:
@@ -97,7 +97,7 @@ func main() {
 										result, permit := barang.UpdateBarang(result.ID, barangID)
 										if permit {
 											fmt.Println("Barang berhasil diperbarui dengan detail berikut:")
-											fmt.Printf("ID: %d\nNama: %s\nHarga: %s\nStok: %d\n Nama Editor:%d", result.ID, result.Nama_barang, result.Harga_barang, result.Stock, result.UserID)
+											fmt.Printf("ID: %d\nNama: %s\nHarga: %2.f\nStok: %d\n Nama Editor:%d", result.ID, result.Nama_barang, result.Harga_barang, result.Stock, result.UserID)
 										}
 									case 4:
 										var barangID uint
@@ -109,7 +109,14 @@ func main() {
 											fmt.Println("Tugas berhasil dihapus")
 										}
 									case 5:
-										// Logika untuk Update Stock
+										var barangID uint
+										fmt.Print("Masukkan ID barang yang akan diperbarui: ")
+										fmt.Scanln(&barangID)
+										result, permit := barang.UpdateStock(result.ID, barangID)
+										if permit {
+											fmt.Println("Stock Barang berhasil diperbarui dengan detail berikut:")
+											fmt.Printf("ID: %d\nNama: %s\nStok: %d\n Nama Editor:%d", result.ID, result.Nama_barang, result.Stock, result.UserID)
+										}
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
@@ -523,7 +530,6 @@ func main() {
 									fmt.Println("1. Tambah Data Customer")
 									fmt.Println("2. Tampilkan Daftar Customer")
 									fmt.Println("3. Update Data Customer")
-									fmt.Println("4. Hapus Data Customer")
 									fmt.Println("0. Kembali")
 									fmt.Print("Pilihan: ")
 									var choice int
@@ -556,15 +562,6 @@ func main() {
 											fmt.Println("Data Customer berhasil diperbarui dengan detail berikut:")
 											fmt.Printf("No HP: %d\nNama : %s\nAlamat: %s\nEmail: %s\n", result.No_hp, result.Nama, result.Alamat, result.Email)
 										}
-									case 4:
-										var no_Hp uint
-										fmt.Print("Masukkan No HP Customer yang akan dihapus: ")
-										fmt.Scanln(&no_Hp)
-
-										permit := customer.DeleteCustomer(no_Hp)
-										if permit {
-											fmt.Println("Data Customer berhasil dihapus")
-										}
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
@@ -574,7 +571,6 @@ func main() {
 									fmt.Println("======Menu Transaksi========")
 									fmt.Println("1. Tambah Data Transaksi")
 									fmt.Println("2. Tampilkan Daftar Transaksi")
-									fmt.Println("3. Hapus Data Transaksi")
 									fmt.Println("0. Kembali")
 									fmt.Print("Pilihan: ")
 									var choice int
@@ -612,15 +608,6 @@ func main() {
 												fmt.Printf("No Nota: %d\nTanggal Transaksi : %s\nUser ID: %d\nNo HP: %d\nID Metode :%d\n", m.No_nota, m.Tanggal_transaksi, m.UserID, m.No_hp, m.Id_metode)
 											}
 										}
-									case 3:
-										var no_Nota uint
-										fmt.Print("Masukkan No Hp Customer yang akan dihapus: ")
-										fmt.Scanln(&no_Nota)
-
-										permit := transaksi.DeleteTransaksi(result.ID, no_Nota)
-										if permit {
-											fmt.Println("Data Customer berhasil dihapus")
-										}
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
@@ -630,8 +617,7 @@ func main() {
 									fmt.Println("======Menu Detail Transaksi========")
 									fmt.Println("1. Tambah Data Transaksi Detail")
 									fmt.Println("2. Cari Detail Transaksi")
-									fmt.Println("3. Update Detail Transaksi")
-									fmt.Println("4. Hapus Detail Transaksi")
+									fmt.Println("0. Kembali")
 									fmt.Println("5. Keluar")
 									fmt.Print("Pilihan: ")
 									var choice int
@@ -679,38 +665,6 @@ func main() {
 												fmt.Printf("Nota Transaksi: %d, ID Barang: %d, Jumlah Barang: %d, Total Harga: %f, Status Pembayaran: %s\n",
 													transaksi.Nota_transaksi, transaksi.Id_barang, transaksi.Jumlah_barang, transaksi.Total_harga, transaksi.Status_pembayaran)
 											}
-										}
-									case 3:
-										var notaTransaksi uint
-										var idBarang uint
-										var jumlahBarang uint
-										var statusPembayaran string
-										var totalHarga float64
-										fmt.Print("Masukkan Nota Transaksi: ")
-										fmt.Scanln(&notaTransaksi)
-										fmt.Print("Masukkan ID Barang: ")
-										fmt.Scanln(&idBarang)
-										fmt.Print("Masukkan Jumlah Barang: ")
-										fmt.Scanln(&jumlahBarang)
-										fmt.Print("Masukkan Status Pembayaran: ")
-										fmt.Scanln(&statusPembayaran)
-										resultTransaksi, permitTransaksi := transaksi_detail.UpdateTransaksiDetail(notaTransaksi, idBarang, jumlahBarang, totalHarga, statusPembayaran)
-										if permitTransaksi {
-											fmt.Println("Data Transaksi berhasil ditambahkan dengan detail berikut:")
-											fmt.Printf("No Nota: %d\nID Barang: %d\nJumlah Barang: %d\nTotal Harga: %.2f\nStatus Pembayaran: %s\n",
-												resultTransaksi.Nota_transaksi, resultTransaksi.Id_barang, resultTransaksi.Jumlah_barang, resultTransaksi.Total_harga, resultTransaksi.Status_pembayaran)
-										}
-									case 4:
-										var notaTransaksi uint
-										var idBarang uint
-										fmt.Print("Masukkan Nota Transaksi yang akan dihapus detailnya: ")
-										fmt.Scanln(&notaTransaksi)
-										fmt.Print("Masukkan ID Barang yang akan dihapus detailnya: ")
-										fmt.Scanln(&idBarang)
-
-										permit := transaksi_detail.DeleteTransaksiDetail(notaTransaksi, idBarang)
-										if permit {
-											fmt.Println("Data Customer berhasil dihapus")
 										}
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
