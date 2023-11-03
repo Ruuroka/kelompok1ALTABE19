@@ -270,6 +270,19 @@ func main() {
 											}
 										}
 									case 3:
+										var notaTransaksi uint
+										var idBarang uint
+										fmt.Print("Masukkan Nota Transaksi yang akan diupdate detailnya: ")
+										fmt.Scanln(&notaTransaksi)
+										fmt.Print("Masukkan ID Barang yang akan diupdate detailnya: ")
+										fmt.Scanln(&idBarang)
+
+										transaksi, permit := transaksi_detail.UpdateTransaksiDetail(notaTransaksi, idBarang)
+										if permit {
+											fmt.Println("===Daftar Detail Transaksi===")
+											fmt.Printf("Nota Transaksi: %d\nNama Customer:%s\nNama User:%s\nNama Metode:%s\nID Barang: %d\nJumlah Barang: %d\nTotal Harga: %d\nTanggal Update Transaksi:%s\n",
+												transaksi.Nota_transaksi, transaksi.NamaCustomer, transaksi.NamaUser, transaksi.NamaMetode, transaksi.Id_barang, transaksi.Jumlah_barang, transaksi.Total_harga, transaksi.UpdatedAt)
+										}
 									case 4:
 										var notaTransaksi uint
 										var idBarang uint
@@ -280,7 +293,7 @@ func main() {
 
 										permit := transaksi_detail.DeleteTransaksiDetail(notaTransaksi, idBarang)
 										if permit {
-											fmt.Println("Data Customer berhasil dihapus")
+											fmt.Println("Data Transaksi berhasil dihapus")
 										}
 									default:
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")

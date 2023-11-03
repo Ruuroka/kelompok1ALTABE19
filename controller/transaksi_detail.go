@@ -90,53 +90,62 @@ func (tds *TransaksiDetailSystem) ShowTransaksiDetail(notaTransaksi uint) ([]mod
 	return transaksiDetails, true
 }
 
-// func (tds *TransaksiDetailSystem) UpdateTransaksiDetail(notaTransaksi uint, idBarang uint, jumlahBarang uint, totalHarga float64, statusPembayaran string) (model.TransaksiDetail, bool) {
-// 	existingTransaksiDetail := model.TransaksiDetail{}
-// 	err := tds.DB.Where("nota_transaksi = ? AND id_barang = ?", notaTransaksi, idBarang).First(&existingTransaksiDetail).Error
-// 	if err != nil {
-// 		return model.TransaksiDetail{}, false
-// 	}
+func (tds *TransaksiDetailSystem) UpdateTransaksiDetail(notaTransaksi uint, idBarang uint) (model.TransaksiDetail, bool) {
+	existingTransaksiDetail := model.TransaksiDetail{}
+	var transaksiBarangbaru model.Barang
+	err := tds.DB.Where("nota_transaksi = ? AND id_barang = ?", notaTransaksi, idBarang).First(&existingTransaksiDetail).Error
+	if err != nil {
+		return model.TransaksiDetail{}, false
+	}
 
-// 	var hargaBarang int
-// 	err = tds.DB.Model(&model.Barang{}).Where("id = ?", idBarang).Pluck("harga_barang", &hargaBarang).Error
-// 	if err != nil {
-// 		fmt.Println("Error mengambil harga barang:", err)
-// 		return model.TransaksiDetail{}, false
-// 	}
-// 	totalHarga = hargaBarang * jumlahBarang
+	var transaksiCustomer model.Customer
+	var transaksiMetode model.Metode_Pembayaran
 
-// 	var barang model.Barang
-// 	if err := tds.DB.First(&barang, idBarang).Error; err != nil {
-// 		fmt.Println("Error mengambil data barang:", err)
-// 		return model.TransaksiDetail{}, false
-// 	}
+	fmt.Print("Masukkan Id Customer: ")
+	fmt.Scanln(&transaksiCustomer.Id)
+	fmt.Print("Masukkan Metode Pembayaran: ")
+	fmt.Scanln(&transaksiMetode.ID)
 
-// 	if barang.Stock < jumlahBarang {
-// 		fmt.Println("Stock tidak mencukupi untuk jumlah barang yang diminta")
-// 		return model.TransaksiDetail{}, false
-// 	}
+	existingTransaksiDetail.Nota_transaksi = notaTransaksi
+	existingTransaksiDetail.Id_barang = idBarang
 
-// 	barang.Stock -= jumlahBarang
-// 	// Disesuaikan dengan nama field yang benar di model Barang
-// 	barang.Harga_barang = totalHarga // Update harga_barang sesuai kebutuhan
+	fmt.Print("Masukkan Jumlah Barang: ")
+	fmt.Scanln(&existingTransaksiDetail.Jumlah_barang)
 
-// 	err = tds.DB.Save(&barang).Error
-// 	if err != nil {
-// 		fmt.Println("Error mengupdate data barang:", err)
-// 		return model.TransaksiDetail{}, false
-// 	}
+	var hargaBarang uint
+	err = tds.DB.Model(&transaksiBarangbaru).Where("id = ?", idBarang).Pluck("harga_barang", &hargaBarang).Error
+	if err != nil {
+		fmt.Println("Error mengambil harga barang:", err)
+		return model.TransaksiDetail{}, false
+	}
 
-// 	existingTransaksiDetail.Jumlah_barang = jumlahBarang
-// 	existingTransaksiDetail.Total_harga = totalHarga
-// 	existingTransaksiDetail.Status_pembayaran = statusPembayaran
+	existingTransaksiDetail.Total_harga = hargaBarang * existingTransaksiDetail.Jumlah_barang
 
-// 	err = tds.DB.Save(&existingTransaksiDetail).Error
-// 	if err != nil {
-// 		return model.TransaksiDetail{}, false
-// 	}
+	if err := tds.DB.First(&transaksiBarangbaru, idBarang).Error; err != nil {
+		fmt.Println("Error mengambil data barang:", err)
+		return model.TransaksiDetail{}, false
+	}
 
-// 	return existingTransaksiDetail, true
-// }
+	if transaksiBarangbaru.Stock < existingTransaksiDetail.Jumlah_barang {
+		fmt.Println("Stock tidak mencukupi untuk jumlah barang yang diminta")
+		return model.TransaksiDetail{}, false
+	}
+
+	transaksiBarangbaru.Stock -= existingTransaksiDetail.Jumlah_barang
+
+	err = tds.DB.Save(&transaksiBarangbaru).Error
+	if err != nil {
+		fmt.Println("Error mengupdate data barang:", err)
+		return model.TransaksiDetail{}, false
+	}
+
+	err = tds.DB.Save(&existingTransaksiDetail).Error
+	if err != nil {
+		return model.TransaksiDetail{}, false
+	}
+
+	return existingTransaksiDetail, true
+}
 
 func (tds *TransaksiDetailSystem) DeleteTransaksiDetail(notaTransaksi uint, idBarang uint) bool {
 	existingTransaksiDetail := model.TransaksiDetail{}
