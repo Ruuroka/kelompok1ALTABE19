@@ -1,2 +1,3 @@
 # kelompok1ALTABE19
-<h2>ERD</h2>
+![ERD kerkom](https://url.gambar.erd/tugaskerkom.png)
+
