@@ -1,4 +1,4 @@
 # kelompok1ALTABE19
-![ERD kerkom](tugaskerkom.png)
+![ERD kerkom](tugaskerkom.jpg)
 
 
