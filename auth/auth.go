@@ -46,3 +46,48 @@ func (as *AuthSystem) Register() (model.User, bool) {
 
 	return *newUser, true
 }
+
+func (as *AuthSystem) Show(userID uint) ([]model.User, bool) {
+	var user []model.User
+	as.DB.Find(&user)
+	if len(user) == 0 {
+		fmt.Println("Daftar User kosong.")
+		return nil, false
+	}
+	return user, true
+}
+
+func (as *AuthSystem) Update(userID uint) (model.User, bool) {
+	var existingUser = model.User{}
+	err := as.DB.First(&existingUser, userID).Error
+	if err != nil {
+		return model.User{}, false
+	}
+	fmt.Print("Masukkan Nama = ")
+	fmt.Scanln(&existingUser.Nama)
+	fmt.Print("Masukkan Password = ")
+	fmt.Scanln(&existingUser.Password)
+	// err := as.DB.Table("pelanggan").Create(existingUser).Error
+	err = as.DB.Save(existingUser).Error
+	if err != nil {
+		fmt.Println("input error:", err.Error())
+		return model.User{}, false
+	}
+
+	return existingUser, true
+}
+
+func (as *AuthSystem) Delete(userID uint) bool {
+	existingUser := model.User{}
+	err := as.DB.Where("id = ?", userID).First(&existingUser).Error
+	if err != nil {
+		return false
+	}
+
+	err = as.DB.Delete(&existingUser).Error
+	if err != nil {
+		return false
+	}
+
+	return true
+}
