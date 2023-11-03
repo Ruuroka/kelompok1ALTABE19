@@ -43,10 +43,12 @@ func main() {
 						for permit {
 							fmt.Println("======Tampilan Admin========")
 							fmt.Println("1. Tambahkan akun Pegawai")
-							fmt.Println("2. Menu Barang")
-							fmt.Println("3. Menu Metode Transaksi")
-							fmt.Println("4. Menu Customer")
-							fmt.Println("5. Detail Transaksi")
+							fmt.Println("2. Update akun Pegawai")
+							fmt.Println("3. Delete akun Pegawai")
+							fmt.Println("4. Menu Barang")
+							fmt.Println("5. Menu Metode Transaksi")
+							fmt.Println("6. Menu Customer")
+							fmt.Println("7. Detail Transaksi")
 							fmt.Println("0. Logout")
 							fmt.Println("99. Exit")
 							fmt.Print("Masukkan pilihan:")
@@ -55,9 +57,36 @@ func main() {
 							case 1:
 								result, permit := auth.Register()
 								if permit {
-									fmt.Println(result, "Berhasil menambahkan data")
+									fmt.Println("User berhasil ditambahkan dengan detail berikut:")
+									fmt.Printf("Nama: %s\n", result.Nama)
 								}
 							case 2:
+								resultUser, permitUser := auth.Show(result.ID)
+								if permitUser {
+									for _, b := range resultUser {
+										fmt.Println("===Daftar Barang===")
+										fmt.Printf("ID: %d\nNama: %s\n", b.ID, b.Nama)
+									}
+								}
+
+								var userID uint
+								fmt.Print("Masukkan ID User yang akan diperbarui: ")
+								fmt.Scanln(&userID)
+								result, permit := auth.Update(userID)
+								if permit {
+									fmt.Println("User berhasil diupdate dengan detail berikut:")
+									fmt.Printf("Nama: %s\n", result.Nama)
+								}
+							case 3:
+								var userID uint
+								fmt.Print("Masukkan ID User yang akan dihapus: ")
+								fmt.Scanln(&userID)
+								permit := auth.Delete(userID)
+								if permit {
+									fmt.Println("Barang berhasil menghapus dengan detail berikut:")
+									fmt.Printf("Nama: %s\n", result.Nama)
+								}
+							case 4:
 								inMenuBarang := true
 								for inMenuBarang {
 									fmt.Println("======Menu Barang========")
@@ -120,7 +149,7 @@ func main() {
 									}
 								}
 
-							case 3:
+							case 5:
 								inMetodeTransaksi := true
 								for inMetodeTransaksi {
 									fmt.Println("======Menu Metode Transaksi========")
@@ -173,7 +202,7 @@ func main() {
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
 								}
-							case 4:
+							case 6:
 								inMenuCustomer := true
 								for inMenuCustomer {
 									fmt.Println("======Menu Customer========")
@@ -226,7 +255,7 @@ func main() {
 										fmt.Println("Pilihan tidak valid. Silakan pilih lagi.")
 									}
 								}
-							case 5:
+							case 7:
 								inDetailTransaksi := true
 								for inDetailTransaksi {
 									fmt.Println("======Menu Detail Transaksi========")
